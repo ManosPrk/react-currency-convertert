@@ -1,0 +1,22 @@
+.currency-form-wrapper {
+  width: 100%;
+}
+
+.form-row {
+  align-items: flex-end;
+}
+
+.form-group {
+  margin-right: 10px;
+}
+
+.form-group > .field > .form-control,
+.form-group > button,
+.form-group > svg {
+  height: 4rem;
+  font-size: 1.5rem;
+}
+
+.form-group > label {
+  font-size: 2rem;
+}

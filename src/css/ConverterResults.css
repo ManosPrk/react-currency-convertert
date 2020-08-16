@@ -1,0 +1,12 @@
+#conversion-result {
+  text-align: center;
+}
+
+.base-currency-wrapper {
+}
+
+.target-currency-wrapper {
+  font-size: 5rem;
+  line-height: 5rem;
+  vertical-align: baseline;
+}

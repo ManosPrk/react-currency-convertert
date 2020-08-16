@@ -1,0 +1,5 @@
+.side-bar {
+  grid-column: 1 / 2;
+  position: relative;
+  min-width: 20%;
+}
