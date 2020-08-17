@@ -1,23 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import PropTypes, { object } from "prop-types";
+import PropTypes from "prop-types";
 import "../../css/CurrencyConverter.css";
 import { loadCurrencies } from "../../redux/actions/currencyActions";
 import { loadExchangeRates } from "../../redux/actions/exchangeRateActions";
+import { updateSelectedExchangeRate } from "../../redux/actions/selectedRateActions";
 import { formatCurrency } from "../../helpers/formatHelpers";
 import CurrencyConverterForm from "./CurrencyConverterForm";
 import ConverterResults from "./ConverterResults";
 import { toast } from "react-toastify";
 import Spinner from "../common/Spinner";
-import { set } from "lodash";
 
 function CurrencyConverter({
   exchangeRates,
   loadExchangeRates,
   currencies,
   loadCurrencies,
+  selectedExchangeRate,
+  updateSelectedExchangeRate,
 }) {
-  const [exchangeRate, setExchangeRate] = useState({});
   const [conversionResultData, setConversionResultData] = useState({});
   const [baseAmount, setBaseAmount] = useState(1);
   const [disableConversion, setDisableConversion] = useState(false);
@@ -33,7 +34,7 @@ function CurrencyConverter({
   }, []);
 
   useEffect(() => {
-    const { base, target } = exchangeRate;
+    const { base, target } = selectedExchangeRate;
     if (!base || !target) {
       setDisableConversion(true);
       return;
@@ -47,13 +48,14 @@ function CurrencyConverter({
       return;
     }
     setDisableConversion(false);
-  }, [exchangeRate]);
+  }, [selectedExchangeRate]);
 
   function handleOnSubmit(event) {
     event.preventDefault();
     const { ratio, base, target } = exchangeRates.find(
       (e) =>
-        e.base.id === exchangeRate.base && e.target.id === exchangeRate.target
+        e.base.id === selectedExchangeRate.base &&
+        e.target.id === selectedExchangeRate.target
     );
     setConversionResultData((prevResultData) => ({
       ...prevResultData,
@@ -66,10 +68,7 @@ function CurrencyConverter({
 
   function handleOnCurrencyChange(event) {
     const { name, value } = event.target;
-    setExchangeRate((prevExchangeRate) => ({
-      ...prevExchangeRate,
-      [name]: parseInt(value) || 0,
-    }));
+    updateSelectedExchangeRate({ [name]: parseInt(value) || 0 });
   }
 
   function handleOnAmountChange(event) {
@@ -83,24 +82,23 @@ function CurrencyConverter({
   }
 
   function handleInvertClick() {
-    setExchangeRate((prevExchangeRate) => ({
-      ...prevExchangeRate,
-      base: exchangeRate.target,
-      target: exchangeRate.base,
-    }));
+    updateSelectedExchangeRate({
+      base: selectedExchangeRate.target,
+      target: selectedExchangeRate.base,
+    });
   }
 
   return (
     <div className="container" id="currency-converter-container">
-      {currencies.length === 0 ? (
+      {exchangeRates.length === 0 ? (
         <Spinner />
       ) : (
         <CurrencyConverterForm
-          base={exchangeRate.base}
-          target={exchangeRate.target}
+          base={selectedExchangeRate.base}
+          target={selectedExchangeRate.target}
           baseAmount={formatCurrency(
             baseAmount,
-            currencies.find((c) => c.id === exchangeRate.base)
+            currencies.find((c) => c.id === selectedExchangeRate.base)
           )}
           currencies={currencies}
           onCurrencyChange={handleOnCurrencyChange}
@@ -122,12 +120,14 @@ function mapStateToProps(state) {
   return {
     currencies: state.currencies,
     exchangeRates: state.exchangeRates,
+    selectedExchangeRate: state.selectedExchangeRate,
   };
 }
 
 const mapDispatchToProps = {
   loadExchangeRates,
   loadCurrencies,
+  updateSelectedExchangeRate,
 };
 
 CurrencyConverter.propTypes = {
@@ -135,6 +135,8 @@ CurrencyConverter.propTypes = {
   loadCurrencies: PropTypes.func.isRequired,
   loadExchangeRates: PropTypes.func.isRequired,
   exchangeRates: PropTypes.array.isRequired,
+  updateSelectedExchangeRate: PropTypes.func.isRequired,
+  selectedExchangeRate: PropTypes.object.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CurrencyConverter);

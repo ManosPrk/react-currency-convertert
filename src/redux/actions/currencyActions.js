@@ -14,7 +14,7 @@ export function createCurrencySuccess(currency) {
   return { type: types.CREATE_CURRENCY_SUCCESS, currency };
 }
 
-export function deleteCurrencySuccess(currency) {
+export function deleteCurrencyOptimistic(currency) {
   return { type: types.DELETE_CURRENCY_OPTIMISTIC, currency };
 }
 
@@ -30,5 +30,30 @@ export function loadCurrencies() {
         dispatch(apiCallError(err));
         throw err;
       });
+  };
+}
+
+export function saveCurrency(currency) {
+  console.log(currency);
+  return function (dispatch) {
+    dispatch(beginApiCAll());
+    return currencyApi
+      .saveCurrency(currency)
+      .then((savedCurrency) => {
+        currency.id
+          ? dispatch(updateCurrencySuccess(savedCurrency))
+          : dispatch(createCurrencySuccess(savedCurrency));
+      })
+      .catch((err) => {
+        dispatch(apiCallError(err));
+        throw err;
+      });
+  };
+}
+
+export function deleteCurrency(currency) {
+  return function (dispatch) {
+    dispatch(deleteCurrencyOptimistic(currency));
+    return currencyApi.deleteCurrency(currency.id);
   };
 }

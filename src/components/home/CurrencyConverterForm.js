@@ -19,7 +19,7 @@ function CurrencyConverterForm({
 }) {
   return (
     <div className="row">
-      <div className="currency-form-wrapper">
+      <div className="form-wrapper">
         <form onSubmit={handleOnSubmit}>
           <div className="form-row">
             <TextInput

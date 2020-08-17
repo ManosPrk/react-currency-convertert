@@ -5,7 +5,7 @@ import { formatCurrency } from "../../helpers/formatHelpers";
 
 function ConverterResults({ base, target, baseAmount, targetAmount }) {
   return (
-    <div className="row justify-content-center">
+    <div id="conversion-result-wrapper" className="row justify-content-center">
       <div id="conversion-result" className="">
         <div className="base-currency-wrapper">
           <span className="base-amount">

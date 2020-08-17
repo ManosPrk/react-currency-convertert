@@ -15,12 +15,12 @@ function Sidebar() {
         </li>
 
         <li className="nav-item">
-          <NavLink to="/about" activeStyle={activeStyle} exact>
+          <NavLink to="/currencies" activeStyle={activeStyle} exact>
             Manage Currencies
           </NavLink>
         </li>
         <li className="nav-item">
-          <NavLink to="/courses" activeStyle={activeStyle} exact>
+          <NavLink to="/rates" activeStyle={activeStyle} exact>
             Manage Rates
           </NavLink>
         </li>

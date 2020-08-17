@@ -7,6 +7,8 @@ import { PageNotFound } from "./common/PageNotFound";
 import Sidebar from "./common/Sidebar";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import CurrenciesPage from "./manage_currencies/CurrenciesPage";
+import ManageCurrency from "./manage_currencies/ManageCurrency";
 
 function App() {
   return (
@@ -14,6 +16,8 @@ function App() {
       <Header />
       <Sidebar />
       <Switch>
+        <Route exact path="/currencies" component={CurrenciesPage} />
+        <Route exact path="/currencies/:slug" component={ManageCurrency} />
         <Route exact path="/" component={Home} />
         <Route component={PageNotFound} />
       </Switch>

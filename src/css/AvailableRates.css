@@ -1,7 +1,3 @@
 #available-rates-container {
   margin-top: 2rem;
 }
-
-#available-rates-container > .table {
-  color: aliceblue;
-}
