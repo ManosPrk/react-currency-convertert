@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
+import PropTypes, { object } from "prop-types";
 import { connect } from "react-redux";
 import Table from "../common/Table";
 import {
@@ -7,7 +7,6 @@ import {
   saveCurrency,
   deleteCurrency,
 } from "../../redux/actions/currencyActions";
-import TextInput from "../common/TextInput";
 import TextInputForm from "../common/TextInputForm";
 import { toast } from "react-toastify";
 
@@ -40,28 +39,43 @@ function ManageCurrencies({
   }, []);
 
   function updateFormIsValid() {
-    const { Name, IsoCode } = editableCurrency;
+    const { name, isoCode } = editableCurrency;
     const errors = {};
 
-    if (!Name) errors.Name = toast.error("Name is required");
-    if (!IsoCode) errors.IsoCode = toast.error("IsoCode is required");
+    if (!name) errors.name = "Name is required";
+    if (!isoCode) errors.isoCode = "IsoCode is required";
+
+    setErrors(errors);
 
     return Object.keys(errors).length === 0;
   }
 
   function handleUpdate(currency) {
-    currency.id = currencies.find((c) => c.name === currency.Name).id;
+    currency.id = currencies.find((c) => c.name === currency.name).id;
     setEditableCurrency(currency);
     setShowEditForm(true);
   }
 
-  function handleDelete(currency) {}
+  function handleCreate() {
+    setEditableCurrency({});
+    setShowEditForm(true);
+  }
+
+  function handleDelete(currency) {
+    deleteCurrency(currencies.find((c) => c.name === currency.name));
+  }
 
   function handleFormSave() {
     event.preventDefault();
-    saveCurrency(
-      currencies.find((c) => c.id === editableCurrency.id)
-    ).catch((err) => alert(err));
+
+    if (!updateFormIsValid()) {
+      toast.error("Form Invalid");
+      return;
+    }
+
+    saveCurrency(editableCurrency).catch((err) => alert(err));
+    setEditableCurrency({});
+    setShowEditForm(false);
   }
 
   function handleOnChange(event) {
@@ -77,25 +91,30 @@ function ManageCurrencies({
     <div className="content-wrapper">
       {currencies.length > 0 && (
         <div className="container content-container">
-          <h1 style={{ marginBottom: "2rem" }}>Manage Currencies</h1>
+          <div>
+            <h1>Manage Currencies</h1>
+            <button className="btn btn-warning" onClick={handleCreate}>
+              Create
+            </button>
+          </div>
           {showEditForm && (
             <TextInputForm
               items={{
-                Name: editableCurrency.Name,
-                IsoCode: editableCurrency.IsoCode,
+                name: editableCurrency.name,
+                isoCode: editableCurrency.isoCode,
               }}
               onChange={handleOnChange}
               onSave={handleFormSave}
+              errors={errors}
             />
           )}
           <div>
             <Table
               columns={["Name", "ISO code"]}
               rows={currencies.map(({ name, isoCode }) => ({
-                Name: name,
-                IsoCode: isoCode,
+                name,
+                isoCode,
               }))}
-              updateRecord
               buttons={tableButtons}
             />
           </div>

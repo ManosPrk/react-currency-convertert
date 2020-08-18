@@ -1,16 +1,16 @@
 import { handleResponse, handleError } from "./apiUtils";
-const url = "http://localhost:8000/api/currency";
+const url = "http://localhost:8000/api/currency/";
 
 export function getCurrencies() {
   return fetch(url).then(handleResponse).catch(handleError);
 }
 
 export function saveCurrency(currency) {
-  return fetch(url + `/${currency.id}`, {
+  return fetch(url + (currency.id || ""), {
     method: currency.id ? "PUT" : "POST",
     headers: { "content-type": "application/json" },
     body: JSON.stringify({
-      currency: currency.name,
+      name: currency.name,
       isoCode: currency.isoCode,
     }),
   })
@@ -19,7 +19,7 @@ export function saveCurrency(currency) {
 }
 
 export function deleteCurrency(currencyId) {
-  return fetch(url + `/${currencyId}`, {
+  return fetch(url + currencyId, {
     method: "DELETE",
   })
     .then(handleResponse)

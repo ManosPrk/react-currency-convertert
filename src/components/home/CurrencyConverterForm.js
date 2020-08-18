@@ -21,7 +21,7 @@ function CurrencyConverterForm({
     <div className="row">
       <div className="form-wrapper">
         <form onSubmit={handleOnSubmit}>
-          <div className="form-row">
+          <div id="currency-form-row" className="form-row">
             <TextInput
               name="baseAmount"
               label="Amount"
