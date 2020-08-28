@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import "../../css/AvailableRates.css";
 import Table from "../common/Table";
 import { updateSelectedExchangeRate } from "../../redux/actions/selectedRateActions";
-import Button from "../common/Button";
 
 function AvailableRates({
   exchangeRates,
@@ -38,10 +37,9 @@ function AvailableRates({
               target: e.target.isoCode,
               ratio: parseFloat(e.ratio).toFixed(4),
             }))}
-            columns={["From", "To", "Ratio", ""]}
+            columns={["From", "To", "Ratio"]}
             buttons={buttons}
             handleOnClick={handleSelectRate}
-            selectRecord
             title={"Available Rates"}
           />
         </div>

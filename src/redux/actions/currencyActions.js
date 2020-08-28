@@ -33,20 +33,20 @@ export function loadCurrencies() {
   };
 }
 
-export function saveCurrency(currency) {
-  console.log(currency);
+export function saveCurrency(currencyToSave) {
   return function (dispatch) {
     dispatch(beginApiCAll());
     return currencyApi
-      .saveCurrency(currency)
-      .then((savedCurrency) => {
-        currency.id
-          ? dispatch(updateCurrencySuccess(savedCurrency))
-          : dispatch(createCurrencySuccess(savedCurrency));
+      .saveCurrency(currencyToSave)
+      .then(({ message, currency }) => {
+        currencyToSave.id
+          ? dispatch(updateCurrencySuccess(currency))
+          : dispatch(createCurrencySuccess(currency));
+        return message;
       })
-      .catch((err) => {
-        dispatch(apiCallError(err));
-        throw err;
+      .catch((e) => {
+        dispatch(apiCallError(e.errorMessage));
+        return e.errorMessage;
       });
   };
 }

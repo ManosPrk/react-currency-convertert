@@ -18,7 +18,7 @@ export default function exchangeRateReducer(
       );
     case types.DELETE_EXCHANGE_RATE_OPTIMISTIC:
       return state.filter(
-        (exchangeRate) => exchangeRate.id !== action.exchangeRate.id
+        (exchangeRate) => exchangeRate.id !== action.exchangeRateId
       );
     default:
       return state;

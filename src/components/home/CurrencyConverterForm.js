@@ -6,16 +6,16 @@ import TextInput from "../common/TextInput";
 import InvertButton from "./InvertButton";
 
 function CurrencyConverterForm({
-  currencies,
+  fromCurrencies,
+  toCurrencies,
   base,
   target,
   baseAmount,
   handleOnSubmit,
   handleInvertClick,
   onCurrencyChange,
-  onMoneyChange,
+  handleOnAmountChange,
   handleOnBlur,
-  disableSubmitButton,
 }) {
   return (
     <div className="row">
@@ -26,7 +26,7 @@ function CurrencyConverterForm({
               name="baseAmount"
               label="Amount"
               value={baseAmount}
-              onChange={onMoneyChange}
+              onChange={handleOnAmountChange}
               onBlur={handleOnBlur}
             />
             <SelectInput
@@ -34,7 +34,7 @@ function CurrencyConverterForm({
               label="From"
               value={base}
               defaultOption="Currency.."
-              options={currencies.map((currency) => ({
+              options={fromCurrencies.map((currency) => ({
                 value: currency.id,
                 text: currency.name,
               }))}
@@ -46,18 +46,14 @@ function CurrencyConverterForm({
               label="To"
               value={target}
               defaultOption="Currency.."
-              options={currencies.map((currency) => ({
+              options={toCurrencies.map((currency) => ({
                 value: currency.id,
                 text: currency.name,
               }))}
               onChange={onCurrencyChange}
             />
             <div className="form-group">
-              <button
-                type="submit"
-                disabled={disableSubmitButton}
-                className="btn btn-warning"
-              >
+              <button type="submit" className="btn btn-warning">
                 Convert
               </button>
             </div>
@@ -69,16 +65,16 @@ function CurrencyConverterForm({
 }
 
 CurrencyConverterForm.propTypes = {
-  currencies: PropTypes.arrayOf(PropTypes.object),
+  fromCurrencies: PropTypes.array.isRequired,
+  toCurrencies: PropTypes.array.isRequired,
   handleOnSubmit: PropTypes.func.isRequired,
   onCurrencyChange: PropTypes.func.isRequired,
-  onMoneyChange: PropTypes.func.isRequired,
+  handleOnAmountChange: PropTypes.func.isRequired,
   handleInvertClick: PropTypes.func.isRequired,
   handleOnBlur: PropTypes.func.isRequired,
   target: PropTypes.number,
   base: PropTypes.number,
   baseAmount: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  disableSubmitButton: PropTypes.bool,
 };
 
 export default CurrencyConverterForm;

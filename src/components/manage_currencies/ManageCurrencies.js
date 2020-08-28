@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import PropTypes, { object } from "prop-types";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Table from "../common/Table";
 import {
@@ -16,7 +16,7 @@ function ManageCurrencies({
   saveCurrency,
   deleteCurrency,
 }) {
-  const [editableCurrency, setEditableCurrency] = useState({});
+  const [currency, setCurrency] = useState({});
   const [showEditForm, setShowEditForm] = useState(false);
   const [errors, setErrors] = useState({});
   const tableButtons = [
@@ -38,8 +38,8 @@ function ManageCurrencies({
     }
   }, []);
 
-  function updateFormIsValid() {
-    const { name, isoCode } = editableCurrency;
+  function formIsValid() {
+    const { name, isoCode } = currency;
     const errors = {};
 
     if (!name) errors.name = "Name is required";
@@ -52,12 +52,12 @@ function ManageCurrencies({
 
   function handleUpdate(currency) {
     currency.id = currencies.find((c) => c.name === currency.name).id;
-    setEditableCurrency(currency);
+    setCurrency(currency);
     setShowEditForm(true);
   }
 
   function handleCreate() {
-    setEditableCurrency({});
+    setCurrency({ name: "", isoCode: "" });
     setShowEditForm(true);
   }
 
@@ -68,20 +68,21 @@ function ManageCurrencies({
   function handleFormSave() {
     event.preventDefault();
 
-    if (!updateFormIsValid()) {
-      toast.error("Form Invalid");
+    if (!formIsValid()) {
       return;
     }
 
-    saveCurrency(editableCurrency).catch((err) => alert(err));
-    setEditableCurrency({});
+    saveCurrency(currency)
+      .then((message) => toast.success(message))
+      .catch((message) => toast.error(message));
+    setCurrency({});
     setShowEditForm(false);
   }
 
   function handleOnChange(event) {
     const { name, value } = event.target;
-    console.log(name, value);
-    setEditableCurrency((prevEditableCurrency) => ({
+
+    setCurrency((prevEditableCurrency) => ({
       ...prevEditableCurrency,
       [name]: value,
     }));
@@ -93,31 +94,30 @@ function ManageCurrencies({
         <div className="container content-container">
           <div>
             <h1>Manage Currencies</h1>
-            <button className="btn btn-warning" onClick={handleCreate}>
+            <button
+              style={{ fontSize: "1.5rem" }}
+              className="btn btn-warning"
+              onClick={handleCreate}
+            >
               Create
             </button>
           </div>
           {showEditForm && (
             <TextInputForm
               items={{
-                name: editableCurrency.name,
-                isoCode: editableCurrency.isoCode,
+                name: currency.name,
+                isoCode: currency.isoCode,
               }}
               onChange={handleOnChange}
               onSave={handleFormSave}
               errors={errors}
             />
           )}
-          <div>
-            <Table
-              columns={["Name", "ISO code"]}
-              rows={currencies.map(({ name, isoCode }) => ({
-                name,
-                isoCode,
-              }))}
-              buttons={tableButtons}
-            />
-          </div>
+          <Table
+            columns={["ID", "Name", "ISO code"]}
+            rows={currencies}
+            buttons={tableButtons}
+          />
         </div>
       )}
     </div>
@@ -126,6 +126,7 @@ function ManageCurrencies({
 
 ManageCurrencies.propTypes = {
   currencies: PropTypes.array.isRequired,
+  currency: PropTypes.object.isRequired,
   loadCurrencies: PropTypes.func.isRequired,
   saveCurrency: PropTypes.func.isRequired,
   deleteCurrency: PropTypes.func.isRequired,

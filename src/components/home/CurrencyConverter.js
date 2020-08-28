@@ -20,8 +20,9 @@ function CurrencyConverter({
   updateSelectedExchangeRate,
 }) {
   const [conversionResultData, setConversionResultData] = useState({});
+  const [fromCurrencies, setFromCurrencies] = useState([]);
+  const [toCurrencies, setToCurrencies] = useState([]);
   const [baseAmount, setBaseAmount] = useState(1);
-  const [disableConversion, setDisableConversion] = useState(false);
 
   useEffect(() => {
     if (currencies.length === 0) {
@@ -29,25 +30,31 @@ function CurrencyConverter({
     }
 
     if (exchangeRates.length === 0) {
-      loadExchangeRates().catch((err) => alert(err));
+      loadExchangeRates()
+        .then((rates) =>
+          updateSelectedExchangeRate({
+            base: rates[0].base.id,
+            target: rates[0].target.id,
+          })
+        )
+        .catch((err) => alert(err));
     }
   }, []);
 
   useEffect(() => {
-    const { base, target } = selectedExchangeRate;
-    if (!base || !target) {
-      setDisableConversion(true);
-      return;
-    }
-    const existingRate = exchangeRates.some(
-      (e) => e.base.id === base && e.target.id === target
+    setFromCurrencies(
+      exchangeRates.reduce((prev, current) => {
+        if (!prev.find((currency) => currency.id === current.base.id)) {
+          prev.push(current.base);
+        }
+        return prev;
+      }, [])
     );
-    if (!existingRate) {
-      setDisableConversion(true);
-      toast.error(`Cant find a rate for these currencies`);
-      return;
-    }
-    setDisableConversion(false);
+    setToCurrencies(
+      exchangeRates
+        .filter((rate) => rate.base.id === selectedExchangeRate.base)
+        .map((rate) => rate.target)
+    );
   }, [selectedExchangeRate]);
 
   function handleOnSubmit(event) {
@@ -100,13 +107,13 @@ function CurrencyConverter({
             baseAmount,
             currencies.find((c) => c.id === selectedExchangeRate.base)
           )}
-          currencies={currencies}
+          fromCurrencies={fromCurrencies}
+          toCurrencies={toCurrencies}
           onCurrencyChange={handleOnCurrencyChange}
-          onMoneyChange={handleOnAmountChange}
+          handleOnAmountChange={handleOnAmountChange}
           handleOnBlur={handleOnBlur}
           handleOnSubmit={handleOnSubmit}
           handleInvertClick={handleInvertClick}
-          disableSubmitButton={disableConversion}
         />
       )}
       {Object.keys(conversionResultData).length > 0 && (

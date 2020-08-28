@@ -1,8 +1,11 @@
+.table-container {
+  margin: 1rem 0 1rem 0;
+}
+
 .table-container .table,
 .table-container .table-header {
   color: aliceblue;
 }
 
 .table-header {
-  margin-bottom: 2rem;
 }

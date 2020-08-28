@@ -14,8 +14,8 @@ export function createExchangeRateSuccess(exchangeRate) {
   return { type: types.CREATE_EXCHANGE_RATE_SUCCESS, exchangeRate };
 }
 
-export function deleteExchangeRateSuccess(exchangeRate) {
-  return { type: types.DELETE_EXCHANGE_RATE_OPTIMISTIC, exchangeRate };
+export function deleteExchangeRateOptimistic(exchangeRateId) {
+  return { type: types.DELETE_EXCHANGE_RATE_OPTIMISTIC, exchangeRateId };
 }
 
 export function loadExchangeRates() {
@@ -25,10 +25,46 @@ export function loadExchangeRates() {
       .getExchangeRates()
       .then((exchangeRates) => {
         dispatch(loadExchangeRatesSuccess(exchangeRates));
+        return exchangeRates;
       })
       .catch((err) => {
         dispatch(apiCallError(err));
         throw err;
+      });
+  };
+}
+
+export function saveExchangeRate(exchangeRate) {
+  return function (dispatch) {
+    dispatch(beginApiCAll());
+    return exchangeRateApi
+      .saveExchangeRate(exchangeRate)
+      .then((savedExchangeRates) => {
+        exchangeRate.id
+          ? savedExchangeRates.forEach((rate) =>
+              dispatch(updateExchangeRateSuccess(rate))
+            )
+          : savedExchangeRates.forEach((rate) =>
+              dispatch(createExchangeRateSuccess(rate))
+            );
+        return savedExchangeRates;
+      })
+      .catch((err) => {
+        dispatch(apiCallError(err));
+        return err;
+      });
+  };
+}
+
+export function deleteExchangeRate(exchangeRateId) {
+  return function (dispatch) {
+    return exchangeRateApi
+      .deleteExchangeRate(exchangeRateId)
+      .then((response) => {
+        response.ratesDeleted.forEach((rateId) =>
+          dispatch(deleteExchangeRateOptimistic(rateId))
+        );
+        return response.message;
       });
   };
 }
