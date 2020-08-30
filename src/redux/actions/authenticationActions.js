@@ -25,7 +25,7 @@ export function loginRequest(user) {
       .getToken(user.username, user.password)
       .then(({ token }) => {
         user.token = token;
-        localStorage.setItem("user", JSON.stringify(user));
+        sessionStorage.setItem("user", JSON.stringify(user));
         dispatch(loginSuccess({ loggedIn: true }));
         return user;
       })

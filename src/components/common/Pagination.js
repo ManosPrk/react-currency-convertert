@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import PageItem from "./PageItem";
 import { range } from "../../helpers/arrayHelpers";
@@ -9,8 +9,8 @@ function Pagination({
   pageLimit,
   reqPageNeighbours,
   onPageChanged,
+  currentPage,
 }) {
-  const [currentPage, setCurrentPage] = useState(1);
   const pageNeighbours =
     typeof reqPageNeighbours === "number"
       ? Math.max(0, Math.min(reqPageNeighbours, 2))
@@ -20,7 +20,7 @@ function Pagination({
   const totalPages = Math.ceil(totalRecords / pageLimit);
   const pages = fetchPageNumbers();
 
-  useEffect(() => goToPage(1), []);
+  useEffect(() => goToPage(currentPage), [totalRecords, currentPage]);
 
   const handleClick = (page) => (event) => {
     event.preventDefault();
@@ -29,14 +29,7 @@ function Pagination({
 
   const goToPage = (page) => {
     const currentPage = Math.max(0, Math.min(page, totalPages));
-
-    const paginationData = {
-      currentPage,
-      pageLimit,
-    };
-
-    onPageChanged(paginationData);
-    setCurrentPage(currentPage);
+    onPageChanged(currentPage > 1 ? currentPage : 1);
   };
 
   const handleMoveLeft = (event) => {
@@ -128,6 +121,7 @@ Pagination.propTypes = {
   pageLimit: PropTypes.number.isRequired,
   reqPageNeighbours: PropTypes.number.isRequired,
   onPageChanged: PropTypes.func.isRequired,
+  currentPage: PropTypes.number.isRequired,
 };
 
 export default Pagination;

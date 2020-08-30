@@ -1,22 +1,15 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { registerRequest } from "../../redux/actions/authenticationActions";
-import LoginForm from "./LoginForm";
 import { connect } from "react-redux";
 import { toast } from "react-toastify";
+import UserForm from "./UserForm";
 
-function RegistrationPage({
-  registerRequest,
-  authentication,
-  history,
-  ...props
-}) {
+function RegistrationPage({ registerRequest, history }) {
   const [user, setUser] = useState({
     username: "",
     password: "",
   });
-
-  const [errors, setErrors] = useState({});
 
   function handleOnChange(event) {
     const { name, value } = event.target;
@@ -30,11 +23,9 @@ function RegistrationPage({
     const { username, password, email } = user;
     const errors = {};
 
-    if (!username) errors.username = "username is required";
-    if (!password) errors.password = "password is required";
-    if (!password) errors.email = "email is required";
-
-    setErrors(errors);
+    if (!username) errors.username = toast.warn("username is required");
+    if (!password) errors.password = toast.warn("password is required");
+    if (!email) errors.password = toast.warn("email is required");
 
     return Object.keys(errors).length === 0;
   }
@@ -54,7 +45,7 @@ function RegistrationPage({
   return (
     <div id="login-wrapper" className="content-wrapper">
       <div id="login-container" className="content-container">
-        <LoginForm
+        <UserForm
           user={user}
           handleSubmit={submitForm}
           onChange={handleOnChange}
@@ -65,7 +56,10 @@ function RegistrationPage({
   );
 }
 
-RegistrationPage.propTypes = {};
+RegistrationPage.propTypes = {
+  registerRequest: PropTypes.func,
+  history: PropTypes.object,
+};
 
 function mapStateToProps(state) {
   return {

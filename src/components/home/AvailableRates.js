@@ -5,11 +5,7 @@ import "../../css/AvailableRates.css";
 import Table from "../common/Table";
 import { updateSelectedExchangeRate } from "../../redux/actions/selectedRateActions";
 
-function AvailableRates({
-  exchangeRates,
-  selectedExchangeRate,
-  updateSelectedExchangeRate,
-}) {
+function AvailableRates({ exchangeRates, updateSelectedExchangeRate }) {
   const handleSelectRate = (selectedRate) => {
     const { base, target } = exchangeRates.find(
       (e) =>

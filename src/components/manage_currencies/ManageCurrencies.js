@@ -34,7 +34,7 @@ function ManageCurrencies({
 
   useEffect(() => {
     if (currencies.length === 0) {
-      loadCurrencies().catch((err) => alert(err));
+      loadCurrencies().catch((err) => toast.error(err));
     }
   }, []);
 
@@ -90,43 +90,42 @@ function ManageCurrencies({
 
   return (
     <div className="content-wrapper">
-      {currencies.length > 0 && (
-        <div className="container content-container">
-          <div>
-            <h1>Manage Currencies</h1>
-            <button
-              style={{ fontSize: "1.5rem" }}
-              className="btn btn-warning"
-              onClick={handleCreate}
-            >
-              Create
-            </button>
-          </div>
-          {showEditForm && (
-            <TextInputForm
-              items={{
-                name: currency.name,
-                isoCode: currency.isoCode,
-              }}
-              onChange={handleOnChange}
-              onSave={handleFormSave}
-              errors={errors}
-            />
-          )}
+      <div className="container content-container">
+        <div>
+          <h1>Manage Currencies</h1>
+          <button
+            style={{ fontSize: "1.5rem" }}
+            className="btn btn-warning"
+            onClick={handleCreate}
+          >
+            Create
+          </button>
+        </div>
+        {showEditForm && (
+          <TextInputForm
+            items={{
+              name: currency.name,
+              isoCode: currency.isoCode,
+            }}
+            onChange={handleOnChange}
+            onSave={handleFormSave}
+            errors={errors}
+          />
+        )}
+        {currencies.length > 0 && (
           <Table
             columns={["ID", "Name", "ISO code"]}
             rows={currencies}
             buttons={tableButtons}
           />
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }
 
 ManageCurrencies.propTypes = {
   currencies: PropTypes.array.isRequired,
-  currency: PropTypes.object.isRequired,
   loadCurrencies: PropTypes.func.isRequired,
   saveCurrency: PropTypes.func.isRequired,
   deleteCurrency: PropTypes.func.isRequired,

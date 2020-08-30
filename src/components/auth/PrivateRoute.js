@@ -25,6 +25,7 @@ function PrivateRoute({ children, authentication, ...rest }) {
 
 PrivateRoute.propTypes = {
   authentication: PropTypes.object.isRequired,
+  children: PropTypes.object,
 };
 
 function mapStateToProps(state) {

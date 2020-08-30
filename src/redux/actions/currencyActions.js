@@ -23,7 +23,7 @@ export function loadCurrencies() {
     dispatch(beginApiCAll());
     return currencyApi
       .getCurrencies()
-      .then((currencies) => {
+      .then(({ currencies }) => {
         dispatch(loadCurrenciesSuccess(currencies));
       })
       .catch((err) => {

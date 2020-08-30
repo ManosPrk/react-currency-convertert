@@ -2,10 +2,6 @@ import { handleResponse, handleError } from "./apiUtils";
 import { authHeader } from "../helpers/authHelpers";
 const baseUrl = "http://localhost:8000";
 
-export const getLocalStorageToken = () => {
-  return localStorage.getItem("user");
-};
-
 export function getToken(username, password) {
   return fetch(baseUrl + "/api/login_check", {
     method: "PUT",

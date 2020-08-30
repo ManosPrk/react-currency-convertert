@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import "../../css/LoginForm.css";
-import TextInputForm from "../common/TextInputForm";
+import "../../css/UserForm.css";
 
-function LoginForm({ user, handleSubmit, onChange, register }) {
+function UserForm({ user, handleSubmit, onChange, register }) {
   return (
     <div className="form-wrapper">
       <form onSubmit={handleSubmit}>
@@ -69,8 +68,11 @@ function LoginForm({ user, handleSubmit, onChange, register }) {
   );
 }
 
-LoginForm.propTypes = {
+UserForm.propTypes = {
   handleSubmit: PropTypes.func,
+  user: PropTypes.object.isRequired,
+  onChange: PropTypes.func,
+  register: PropTypes.bool,
 };
 
-export default LoginForm;
+export default UserForm;

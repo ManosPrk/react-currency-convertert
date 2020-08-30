@@ -36,6 +36,9 @@ function TextInputForm({ onSave, onChange, items, errors }) {
 
 TextInputForm.propTypes = {
   items: PropTypes.object.isRequired,
+  onSave: PropTypes.func,
+  onChange: PropTypes.func,
+  errors: PropTypes.object,
 };
 
 export default TextInputForm;

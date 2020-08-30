@@ -38,11 +38,11 @@ function ManageRates({
 
   useEffect(() => {
     if (currencies.length === 0) {
-      loadCurrencies().catch((err) => alert(err));
+      loadCurrencies().catch((err) => toast.error(err));
     }
 
     if (exchangeRates.length === 0) {
-      loadExchangeRates().catch((err) => alert(err));
+      loadExchangeRates().catch((err) => toast.error(err));
     }
   }, []);
 
@@ -65,7 +65,7 @@ function ManageRates({
   function handleDelete({ id }) {
     deleteExchangeRate(id)
       .then((message) => toast.success(message))
-      .catch((err) => alert(err));
+      .catch((err) => toast.error(err));
   }
 
   function handleOnChange(event) {
@@ -115,29 +115,29 @@ function ManageRates({
 
   return (
     <div className="content-wrapper">
-      {exchangeRates.length > 0 && (
-        <div className="container content-container">
-          <div>
-            <h1>Manage Rates</h1>
-            <button
-              style={{ fontSize: "1.5rem" }}
-              className="btn btn-warning"
-              onClick={handleCreate}
-            >
-              Create
-            </button>
-          </div>
-          {showEditForm && (
-            <SaveRateForm
-              {...exchangeRate}
-              currencies={currencies}
-              errors={errors}
-              handleOnSubmit={handleFormSave}
-              handleChange={handleOnChange}
-              disableSelect={disableSelection}
-              handleOnBlur={handleOnRatioBlur}
-            />
-          )}
+      <div className="container content-container">
+        <div>
+          <h1>Manage Rates</h1>
+          <button
+            style={{ fontSize: "1.5rem" }}
+            className="btn btn-warning"
+            onClick={handleCreate}
+          >
+            Create
+          </button>
+        </div>
+        {showEditForm && (
+          <SaveRateForm
+            {...exchangeRate}
+            currencies={currencies}
+            errors={errors}
+            handleOnSubmit={handleFormSave}
+            handleChange={handleOnChange}
+            disableSelect={disableSelection}
+            handleOnBlur={handleOnRatioBlur}
+          />
+        )}
+        {exchangeRates.length > 0 && (
           <Table
             columns={["ID", "From", "To", "Ratio"]}
             rows={exchangeRates.map(({ id, base, target, ratio }) => ({
@@ -148,8 +148,8 @@ function ManageRates({
             }))}
             buttons={tableButtons}
           />
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }

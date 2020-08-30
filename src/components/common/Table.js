@@ -1,17 +1,16 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import "../../css/common/Table.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import Pagination from "./Pagination";
 
-function Table({ columns, rows, title, handleOnClick, buttons }) {
+function Table({ columns, rows, title, buttons }) {
   const [currentRows, setCurrentRows] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageLimit = 10;
 
-  function onPageChanged(data) {
-    const { currentPage, pageLimit } = data;
-
+  function onPageChanged(page) {
     const offset = (currentPage - 1) * pageLimit;
+    setCurrentPage(page);
     setCurrentRows(rows.slice(offset, offset + pageLimit));
   }
 
@@ -60,9 +59,10 @@ function Table({ columns, rows, title, handleOnClick, buttons }) {
       </table>
       <Pagination
         totalRecords={rows.length}
-        pageLimit={10}
+        pageLimit={pageLimit}
         reqPageNeighbours={1}
         onPageChanged={onPageChanged}
+        currentPage={currentPage}
       />
     </div>
   );
@@ -71,6 +71,8 @@ function Table({ columns, rows, title, handleOnClick, buttons }) {
 Table.propTypes = {
   columns: PropTypes.array.isRequired,
   rows: PropTypes.array.isRequired,
+  title: PropTypes.string,
+  buttons: PropTypes.array,
 };
 
 export default Table;

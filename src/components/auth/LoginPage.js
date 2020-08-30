@@ -2,16 +2,15 @@ import React, { useState } from "react";
 import "../../css/LoginPage.css";
 import PropTypes from "prop-types";
 import { loginRequest } from "../../redux/actions/authenticationActions";
-import LoginForm from "./LoginForm";
 import { connect } from "react-redux";
+import UserForm from "./UserForm";
+import { toast } from "react-toastify";
 
-function LoginPage({ loginRequest, authentication, history, ...props }) {
+function LoginPage({ loginRequest, history }) {
   const [user, setUser] = useState({
     username: "",
     password: "",
   });
-
-  const [errors, setErrors] = useState({});
 
   function handleOnChange(event) {
     const { name, value } = event.target;
@@ -25,10 +24,8 @@ function LoginPage({ loginRequest, authentication, history, ...props }) {
     const { username, password } = user;
     const errors = {};
 
-    if (!username) errors.username = "username is required";
-    if (!password) errors.password = "password is required";
-
-    setErrors(errors);
+    if (!username) errors.username = toast.warn("username is required");
+    if (!password) errors.password = toast.warn("password is required");
 
     return Object.keys(errors).length === 0;
   }
@@ -45,7 +42,7 @@ function LoginPage({ loginRequest, authentication, history, ...props }) {
   return (
     <div id="login-wrapper" className="content-wrapper">
       <div id="login-container" className="content-container">
-        <LoginForm
+        <UserForm
           user={user}
           handleSubmit={submitForm}
           onChange={handleOnChange}
@@ -55,7 +52,10 @@ function LoginPage({ loginRequest, authentication, history, ...props }) {
   );
 }
 
-LoginPage.propTypes = {};
+LoginPage.propTypes = {
+  loginRequest: PropTypes.func,
+  history: PropTypes.object,
+};
 
 function mapStateToProps(state) {
   return {

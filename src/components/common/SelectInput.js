@@ -45,6 +45,7 @@ SelectInput.propTypes = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   error: PropTypes.string,
   options: PropTypes.arrayOf(PropTypes.object),
+  disableSelect: PropTypes.bool,
 };
 
 export default SelectInput;

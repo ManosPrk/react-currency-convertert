@@ -23,9 +23,9 @@ export function loadExchangeRates() {
     dispatch(beginApiCAll());
     return exchangeRateApi
       .getExchangeRates()
-      .then((exchangeRates) => {
-        dispatch(loadExchangeRatesSuccess(exchangeRates));
-        return exchangeRates;
+      .then(({ rates }) => {
+        dispatch(loadExchangeRatesSuccess(rates));
+        return rates;
       })
       .catch((err) => {
         dispatch(apiCallError(err));
@@ -65,6 +65,7 @@ export function deleteExchangeRate(exchangeRateId) {
           dispatch(deleteExchangeRateOptimistic(rateId))
         );
         return response.message;
-      });
+      })
+      .catch((err) => err.errorMessage);
   };
 }

@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import PropTypes from "prop-types";
 import { Route, Switch } from "react-router-dom";
 import "../css/App.css";
 import Header from "./common/Header";
 import Home from "./home/Home";
 import { PageNotFound } from "./common/PageNotFound";
 import Sidebar from "./common/Sidebar";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ManageCurrencies from "./manage_currencies/ManageCurrencies";
 import ManageRates from "./manage_exchange_rates/ManageRates";
@@ -15,7 +16,7 @@ import { connect } from "react-redux";
 import { loginRequest } from "../redux/actions/authenticationActions";
 import RegistrationPage from "./auth/RegistrationPage";
 
-function App({ authentication, loginRequest }) {
+function App({ authentication }) {
   return (
     <div className="app-container">
       <Header />
@@ -38,6 +39,10 @@ function App({ authentication, loginRequest }) {
     </div>
   );
 }
+
+App.propTypes = {
+  authentication: PropTypes.object,
+};
 
 function mapStateToProps(state) {
   return {

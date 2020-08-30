@@ -26,18 +26,20 @@ function CurrencyConverter({
 
   useEffect(() => {
     if (currencies.length === 0) {
-      loadCurrencies().catch((err) => alert(err));
+      loadCurrencies().catch((err) => toast.error(err));
     }
 
     if (exchangeRates.length === 0) {
       loadExchangeRates()
-        .then((rates) =>
-          updateSelectedExchangeRate({
-            base: rates[0].base.id,
-            target: rates[0].target.id,
-          })
+        .then(
+          (rates) =>
+            rates.length > 0 &&
+            updateSelectedExchangeRate({
+              base: rates[0].base.id,
+              target: rates[0].target.id,
+            })
         )
-        .catch((err) => alert(err));
+        .catch((err) => toast.error(err));
     }
   }, []);
 

@@ -16,6 +16,7 @@ function PageItem({ handleClick, pageText, active }) {
 
 PageItem.propTypes = {
   handleClick: PropTypes.func.isRequired,
+  pageText: PropTypes.number,
   active: PropTypes.bool,
 };
 
