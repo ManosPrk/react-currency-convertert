@@ -10,6 +10,7 @@ import {
 import { loadCurrencies } from "../../redux/actions/currencyActions";
 import SaveRateForm from "./SaveRateForm";
 import { toast } from "react-toastify";
+import Spinner from "../common/Spinner";
 
 function ManageRates({
   currencies,
@@ -38,11 +39,11 @@ function ManageRates({
 
   useEffect(() => {
     if (currencies.length === 0) {
-      loadCurrencies().catch((err) => toast.error(err));
+      loadCurrencies().catch((err) => toast.error(err.message));
     }
 
     if (exchangeRates.length === 0) {
-      loadExchangeRates().catch((err) => toast.error(err));
+      loadExchangeRates().catch((err) => toast.error(err.message));
     }
   }, []);
 
@@ -65,7 +66,7 @@ function ManageRates({
   function handleDelete({ id }) {
     deleteExchangeRate(id)
       .then((message) => toast.success(message))
-      .catch((err) => toast.error(err));
+      .catch((err) => toast.error(err.message));
   }
 
   function handleOnChange(event) {
@@ -137,7 +138,9 @@ function ManageRates({
             handleOnBlur={handleOnRatioBlur}
           />
         )}
-        {exchangeRates.length > 0 && (
+        {exchangeRates.length === 0 ? (
+          <Spinner />
+        ) : (
           <Table
             columns={["ID", "From", "To", "Ratio"]}
             rows={exchangeRates.map(({ id, base, target, ratio }) => ({

@@ -26,7 +26,7 @@ function CurrencyConverter({
 
   useEffect(() => {
     if (currencies.length === 0) {
-      loadCurrencies().catch((err) => toast.error(err));
+      loadCurrencies().catch((err) => toast.error(err.message));
     }
 
     if (exchangeRates.length === 0) {
@@ -39,7 +39,7 @@ function CurrencyConverter({
               target: rates[0].target.id,
             })
         )
-        .catch((err) => toast.error(err));
+        .catch((err) => toast.error(err.message));
     }
   }, []);
 

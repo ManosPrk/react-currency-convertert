@@ -9,6 +9,7 @@ import {
 } from "../../redux/actions/currencyActions";
 import TextInputForm from "../common/TextInputForm";
 import { toast } from "react-toastify";
+import Spinner from "../common/Spinner";
 
 function ManageCurrencies({
   currencies,
@@ -34,7 +35,7 @@ function ManageCurrencies({
 
   useEffect(() => {
     if (currencies.length === 0) {
-      loadCurrencies().catch((err) => toast.error(err));
+      loadCurrencies().catch((err) => toast.error(err.message));
     }
   }, []);
 
@@ -112,7 +113,9 @@ function ManageCurrencies({
             errors={errors}
           />
         )}
-        {currencies.length > 0 && (
+        {currencies.length === 0 ? (
+          <Spinner />
+        ) : (
           <Table
             columns={["ID", "Name", "ISO code"]}
             rows={currencies}

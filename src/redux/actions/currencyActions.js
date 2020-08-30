@@ -45,8 +45,8 @@ export function saveCurrency(currencyToSave) {
         return message;
       })
       .catch((e) => {
-        dispatch(apiCallError(e.errorMessage));
-        return e.errorMessage;
+        dispatch(apiCallError(e));
+        throw e;
       });
   };
 }

@@ -36,7 +36,7 @@ function LoginPage({ loginRequest, history }) {
 
     loginRequest(user)
       .then(() => history.push("/"))
-      .catch((e) => console.log(e));
+      .catch((e) => toast.error(e.message));
   }
 
   return (

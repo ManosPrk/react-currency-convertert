@@ -3,8 +3,8 @@ export async function handleResponse(response) {
     return response.json();
   }
   if (response.status === 400 || response.status === 401) {
-    const error = await response.text();
-    throw new Error(error);
+    const error = await response.json();
+    throw new Error(error.message || error.errorMessage);
   }
 
   throw new Error("Network response was not ok.");

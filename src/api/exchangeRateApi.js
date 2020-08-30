@@ -19,7 +19,6 @@ export function saveExchangeRate(exchangeRate) {
 }
 
 export function deleteExchangeRate(exchangeRateId) {
-  console.log(exchangeRateId);
   return fetch(url + exchangeRateId, {
     method: "DELETE",
     headers: authHeader(),
