@@ -1,2 +1,4 @@
-#invert-button-container {
+#invert-button-container > svg {
+  margin-top: 3.9rem;
+  font-size: 2rem;
 }

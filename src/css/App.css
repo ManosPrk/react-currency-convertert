@@ -46,6 +46,10 @@ a:hover {
   font-size: 2rem;
 }
 
+.form-group > button {
+  margin-top: 3.4rem;
+}
+
 @keyframes slideInFromTop {
   0% {
     transform: translateY(-20%);

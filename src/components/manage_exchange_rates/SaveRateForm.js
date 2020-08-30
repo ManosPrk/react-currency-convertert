@@ -38,7 +38,7 @@ function SaveRateForm({
               }))}
               onChange={handleChange}
               disableSelect={disableSelect}
-              error={errors.base}
+              error={errors.baseId}
             />
             <SelectInput
               name="targetId"
@@ -51,7 +51,7 @@ function SaveRateForm({
               }))}
               onChange={handleChange}
               disableSelect={disableSelect}
-              error={errors.target}
+              error={errors.targetId}
             />
             <div className="form-group">
               <button type="submit" className="btn btn-warning">

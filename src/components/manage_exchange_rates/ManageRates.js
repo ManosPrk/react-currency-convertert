@@ -90,8 +90,8 @@ function ManageRates({
     const errors = {};
 
     if (!ratio) errors.ratio = "ratio is required";
-    if (!baseId || baseId === 0) errors.baseId = "base is required";
-    if (!targetId || targetId === 0) errors.targetId = "target is required";
+    if (!baseId || baseId === 0) errors.baseId = "From is required";
+    if (!targetId || targetId === 0) errors.targetId = "To is required";
 
     setErrors(errors);
 
