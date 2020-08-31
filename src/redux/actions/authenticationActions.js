@@ -25,7 +25,7 @@ export function loginRequest(user) {
       .getToken(user.username, user.password)
       .then(({ token }) => {
         user.token = token;
-        sessionStorage.setItem("user", JSON.stringify(user));
+        localStorage.setItem("user", JSON.stringify(user));
         dispatch(loginSuccess({ loggedIn: true }));
         return user;
       })
@@ -56,6 +56,6 @@ export function registerRequest(user) {
 export function logOut() {
   return function (dispatch) {
     dispatch(logout());
-    authApi.logOut;
+    authApi.logOut();
   };
 }

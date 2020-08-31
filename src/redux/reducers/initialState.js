@@ -1,4 +1,6 @@
-const user = JSON.parse(sessionStorage.getItem("user")) || null;
+import { getStorageUser } from "../../helpers/authHelpers";
+
+const user = getStorageUser();
 
 export default {
   currencies: [],
